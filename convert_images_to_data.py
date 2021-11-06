@@ -7,11 +7,13 @@ from typing import List
 import cv2
 import mediapipe as mp
 import numpy as np
-from numpy.lib.type_check import imag
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
 
+
+LANDMARK_COORDINATES_COUNT = 21
+COORDINATE_DIMENSION_COUNT = 3
 
 DATA_DATASET_DIR_PATH = os.path.join(os.getcwd(), 'datasets', 'data')
 
@@ -22,7 +24,7 @@ class ModelLabel(Enum):
 
 
 def images_to_landmarks(image_paths: List[str], model_label: ModelLabel):
-    total_hand_landmarks = np.empty((len(image_paths), 21, 3))
+    total_hand_landmarks = np.empty((len(image_paths), LANDMARK_COORDINATES_COUNT, COORDINATE_DIMENSION_COUNT))
 
     for image_index, path in enumerate(image_paths):
         frame = cv2.imread(path)
