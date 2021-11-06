@@ -12,9 +12,6 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
 
 
-LANDMARK_COORDINATES_COUNT = 21
-COORDINATE_DIMENSION_COUNT = 3
-
 DATA_DATASET_DIR_PATH = os.path.join(os.getcwd(), 'datasets', 'data')
 
 
@@ -24,16 +21,16 @@ class ModelLabel(Enum):
 
 
 def images_to_landmarks(image_paths: List[str], model_label: ModelLabel):
-    total_hand_landmarks = np.empty((len(image_paths), LANDMARK_COORDINATES_COUNT, COORDINATE_DIMENSION_COUNT))
+    total_hand_landmarks = []
 
-    for image_index, path in enumerate(image_paths):
+    for path in image_paths:
         frame = cv2.imread(path)
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         result = hands.process(frame_rgb)
         if result.multi_hand_landmarks:
             for hand_landmarks in result.multi_hand_landmarks:
-                coords = [[coord.x, coord.y, coord.z] for coord in hand_landmarks.landmark]
-                total_hand_landmarks[image_index] = coords
+                hand_landmarks = [[coord.x, coord.y, coord.z] for coord in hand_landmarks.landmark]
+                total_hand_landmarks.append(hand_landmarks)
 
     np.save(os.path.join(DATA_DATASET_DIR_PATH, f'{model_label.value}_landmarks.npy'), total_hand_landmarks)
 
