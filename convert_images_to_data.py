@@ -22,18 +22,17 @@ class ModelLabel(Enum):
 
 
 def images_to_landmarks(image_paths: List[str], model_label: ModelLabel):
-    total_hand_landmarks = []
+    total_hand_landmarks = np.empty((len(image_paths), 21, 3))
 
-    for path in image_paths[:1]:
+    for image_index, path in enumerate(image_paths):
         frame = cv2.imread(path)
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         result = hands.process(frame_rgb)
         if result.multi_hand_landmarks:
             for hand_landmarks in result.multi_hand_landmarks:
                 coords = [[coord.x, coord.y, coord.z] for coord in hand_landmarks.landmark]
-                total_hand_landmarks.append(coords)
+                total_hand_landmarks[image_index] = coords
 
-    print(total_hand_landmarks)
     np.save(os.path.join(DATA_DATASET_DIR_PATH, f'{model_label.value}_landmarks.npy'), total_hand_landmarks)
 
 
