@@ -27,4 +27,4 @@ def create_dir():
 
 def load(label: ModelLabel):
     data = np.load(get_dataset_path(label))
-    return tf.data.Dataset.from_tensor_slices((data, [label.value]))
+    return tf.data.Dataset.from_tensor_slices(data)
