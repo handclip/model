@@ -33,8 +33,10 @@ def vid_to_landmarks(vid_path):
 
 
 def save_landmarks(model_class: ModelClass):
+    data = []
     vid_paths = dataset.get_vids_paths(model_class)
-    data = [vid_to_landmarks(path) for path in vid_paths]
+    for vid_path in vid_paths:
+        data.extend(vid_to_landmarks(vid_path))
     dataset.save_data(model_class, data)
 
 
