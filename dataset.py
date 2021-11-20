@@ -2,7 +2,6 @@ import os
 from enum import Enum
 
 import numpy as np
-import tensorflow as tf
 
 _DATA_DATASET_DIR_PATH = os.path.join(os.getcwd(), 'datasets', 'data')
 
