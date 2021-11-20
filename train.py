@@ -16,7 +16,7 @@ def save_model(model):
 
 def eval_model(model, X_test, y_test):
     predicted = model.predict(X_test)
-    classification_report(y_test, predicted)
+    print(classification_report(y_test, predicted))
 
 
 def get_training_data():
