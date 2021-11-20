@@ -12,10 +12,10 @@ from dataset import ModelClass
 hands = mp.solutions.hands.Hands()
 
 
-def convert_images_to_data(image_paths: List[str]):
+def convert_imgs_to_data(img_paths: List[str]):
     total_hand_landmarks = []
 
-    for path in image_paths:
+    for path in img_paths:
         frame = cv2.imread(path)
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         result = hands.process(frame_rgb)
@@ -28,23 +28,16 @@ def convert_images_to_data(image_paths: List[str]):
     return total_hand_landmarks
 
 
-def create_data_dataset(model_class: ModelClass, image_dataset_path: str):
-    image_paths = glob.glob(os.path.join(image_dataset_path, '*'))
-    data_dataset = convert_images_to_data(image_paths)
+def create_data_dataset(model_class: ModelClass, img_dataset_path: str):
+    img_paths = glob.glob(os.path.join(img_dataset_path, '*'))
+    data_dataset = convert_imgs_to_data(img_paths)
     dataset.save_data(model_class, data_dataset)
 
 
 def main():
-    if len(sys.argv) != 3:
-        print(f'Usage: {sys.argv[0]} OK_DATASET_PATH NOT_OK_DATASET_PATH')
-        return
-
-    ok_dataset_path = sys.argv[1]
-    not_ok_dataset_path = sys.argv[2]
-
-    dataset.create_dir()
-    create_data_dataset(ModelClass.OK, ok_dataset_path)
-    create_data_dataset(ModelClass.NOT_OK, not_ok_dataset_path)
+    create_data_dataset(ModelClass.OK, dataset.get_img_paths(ModelClass.OK))
+    create_data_dataset(ModelClass.NOT_OK,
+                        dataset.get_img_paths(ModelClass.NOT_OK))
 
 
 if __name__ == '__main__':

@@ -7,10 +7,10 @@ from dataset import ModelClass
 hands = mp.solutions.hands.Hands()
 
 
-def video_to_landmarks(video_path):
+def vid_to_landmarks(vid_path):
     total_hand_landmarks = []
 
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(vid_path)
     while True:
         _, frame = cap.read()
 
@@ -32,14 +32,16 @@ def video_to_landmarks(video_path):
     return total_hand_landmarks
 
 
-def main():
-    ok_left_data = video_to_landmarks('datasets/vids/ok_left.mov')
-    ok_right_data = video_to_landmarks('datasets/vids/ok_right.mov')
-    not_ok_left_data = video_to_landmarks('datasets/vids/not_ok_left.mov')
-    not_ok_right_data = video_to_landmarks('datasets/vids/not_ok_right.mov')
+def save_landmarks(model_class: ModelClass):
+    data = []
+    vid_paths = dataset.get_vids_paths(model_class)
+    data = [vid_to_landmarks(path) for path in vid_paths]
+    dataset.save_data(model_class, data)
 
-    dataset.save_data(ModelClass.OK, ok_left_data + ok_right_data)
-    dataset.save_data(ModelClass.NOT_OK, not_ok_left_data + not_ok_right_data)
+
+def main():
+    save_landmarks(ModelClass.OK)
+    save_landmarks(ModelClass.NOT_OK)
 
 
 if __name__ == '__main__':
