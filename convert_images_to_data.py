@@ -18,7 +18,7 @@ def save_data_dataset(model_class: ModelClass, total_hand_landmarks: List[List[L
     np.save(dataset.get_dataset_path(model_class), total_hand_landmarks)
 
 
-def convert_images_to_data(image_paths: List[str], model_class: ModelClass):
+def convert_images_to_data(image_paths: List[str]):
     total_hand_landmarks = []
 
     for path in image_paths:
@@ -36,7 +36,7 @@ def convert_images_to_data(image_paths: List[str], model_class: ModelClass):
 
 def create_data_dataset(model_class: ModelClass, image_dataset_path: str):
     image_paths = glob.glob(os.path.join(image_dataset_path, '*'))
-    data_dataset = convert_images_to_data(image_paths, model_class)
+    data_dataset = convert_images_to_data(image_paths)
     save_data_dataset(model_class, data_dataset)
 
 
