@@ -9,14 +9,6 @@ import dataset
 from dataset import ModelLabel
 
 
-def get_training_data():
-    ok_dataset = dataset.load(ModelLabel.OK)
-    not_ok_dataset = dataset.load(ModelLabel.NOT_OK)
-    X = np.concatenate((ok_dataset, not_ok_dataset))
-    y = np.concatenate((np.repeat(0, len(ok_dataset)), np.repeat(1, len(not_ok_dataset))))
-    return X, y
-
-
 def save_model(model):
     with open('model.pickle', 'wb') as f:
         f.write(pickle.dumps(model))
@@ -27,6 +19,14 @@ def eval_model(model, X_test, y_test):
     classification_report(y_test, predicted)
 
 
+def get_training_data():
+    ok_dataset = dataset.load(ModelLabel.OK)
+    not_ok_dataset = dataset.load(ModelLabel.NOT_OK)
+    X = np.concatenate((ok_dataset, not_ok_dataset))
+    y = np.concatenate((np.repeat(0, len(ok_dataset)), np.repeat(1, len(not_ok_dataset))))
+    return X, y
+
+
 def main():
     clf = svm.SVC()
     X, y = get_training_data()
@@ -35,3 +35,7 @@ def main():
 
     eval_model(clf, X_test, y_test)
     save_model(clf)
+
+
+if __name__ == '__main__':
+    main()
