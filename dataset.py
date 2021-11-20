@@ -1,5 +1,6 @@
 import os
 from enum import Enum
+from typing import List
 
 import numpy as np
 
@@ -9,6 +10,10 @@ _DATA_DATASET_DIR_PATH = os.path.join(os.getcwd(), 'datasets', 'data')
 class ModelClass(Enum):
     OK = 'ok'
     NOT_OK = 'not_ok'
+
+
+def save_data(model_class: ModelClass, total_hand_landmarks: List[List[List[float]]]):
+    np.save(get_dataset_path(model_class), total_hand_landmarks)
 
 
 def get_dataset_path(model_class: ModelClass):

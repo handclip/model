@@ -5,17 +5,11 @@ from typing import List
 
 import cv2
 import mediapipe as mp
-import numpy as np
 
 import dataset
 from dataset import ModelClass
 
-mp_hands = mp.solutions.hands
-hands = mp_hands.Hands()
-
-
-def save_data_dataset(model_class: ModelClass, total_hand_landmarks: List[List[List[float]]]):
-    np.save(dataset.get_dataset_path(model_class), total_hand_landmarks)
+hands = mp.solutions.hands.Hands()
 
 
 def convert_images_to_data(image_paths: List[str]):
@@ -37,7 +31,7 @@ def convert_images_to_data(image_paths: List[str]):
 def create_data_dataset(model_class: ModelClass, image_dataset_path: str):
     image_paths = glob.glob(os.path.join(image_dataset_path, '*'))
     data_dataset = convert_images_to_data(image_paths)
-    save_data_dataset(model_class, data_dataset)
+    dataset.save_data(model_class, data_dataset)
 
 
 def main():
