@@ -23,7 +23,7 @@ def images_to_landmarks(image_paths: List[str], model_label: ModelLabel):
         result = hands.process(frame_rgb)
         if result.multi_hand_landmarks:
             for hand_landmarks in result.multi_hand_landmarks:
-                hand_landmarks = [[coord.x, coord.y, coord.z] for coord in hand_landmarks.landmark]
+                hand_landmarks = [(coord.x, coord.y, coord.z) for coord in hand_landmarks.landmark]
                 total_hand_landmarks.append(hand_landmarks)
 
     np.save(dataset.get_dataset_path(model_label), total_hand_landmarks)
