@@ -25,6 +25,6 @@ def create_dir():
     os.makedirs(_DATA_DATASET_DIR_PATH, exist_ok=True)
 
 
-def load(label: ModelLabel):
-    data = np.load(get_dataset_path(label))
-    return tf.data.Dataset.from_tensor_slices(data)
+def load(label: ModelLabel, flatten: bool = True) -> np.ndarray:
+    dataset = np.load(get_dataset_path(label))
+    return dataset.reshape(len(dataset), -1) if flatten else dataset
